@@ -13,6 +13,13 @@ var money = 0
 
 var velocity  = Vector2()
 
+func if_transporter_under_player_add_x_velocity():
+	for i in get_slide_count():
+		var collision = get_slide_collision(i)
+		if "Transporter" in collision.collider.name :
+			print('on transporter')
+			velocity.x += 30
+
 func addMoney():
 	money += 1
 
@@ -29,8 +36,6 @@ func _physics_process(delta):
 		$RunDust.show() 
 	else :
 		$RunDust.hide()
-		
-	
 		
 	
 	if Input.is_action_pressed("ui_up")  && is_on_floor():
@@ -72,30 +77,25 @@ func _physics_process(delta):
 		if is_on_floor() :
 			$AnimatedSprite.play("walk")
 			
-	
-	
 	else:
 		velocity.x = 0
 		$AnimatedSprite.play("idle")
 		$RunDust.hide()
 		$RunDust.stop()
 		$RunDust.frame = 0
-
-	
 		
-		
-	
-			
+	if_transporter_under_player_add_x_velocity()
 	velocity.y += (gravity * delta)
 	velocity = move_and_slide(velocity, floor_)
 
 func _on_AnimatedSprite_frame_changed():
 	if $AnimatedSprite.animation == "throw" && $AnimatedSprite.frame == 2:
 		var r = rock.instance()
-		r.position = $Position2D.global_position
+		r.global_position = $Position2D.global_position
 		r.direction = sign($Position2D.position.x)
+		r.set_as_toplevel(true)
 		get_parent().add_child(r)
 		is_throwing = false
+		
+		
 
-func move_by_x(value) :
-	velocity.x += value

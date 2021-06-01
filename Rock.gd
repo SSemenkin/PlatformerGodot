@@ -23,5 +23,10 @@ func _on_VisibilityNotifier2D_screen_exited():
 	queue_free()
 
 
-func _on_KinematicBody2D_body_entered(body):
+func _on_KinematicBody2D_body_entered(_body):
+	$Sprite.play()
+	
+
+
+func _on_Sprite_animation_finished():
 	queue_free()

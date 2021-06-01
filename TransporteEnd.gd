@@ -12,12 +12,4 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
-
-
-
-func _on_Area2D_body_shape_entered(body_id, body, body_shape, local_shape):
-	if "Player" in body.name:
-		body.move_by_x(10)
-		print ('body moved')
+#func _process(delta

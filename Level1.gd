@@ -14,5 +14,5 @@ func _ready():
 		if "Money" in get_child(i).name:
 			counter += 1
 
-func _process(delta):
+func _process(_delta):
 	$Stats/CanvasLayer/Label.text = str($Player.money)  + "/" + str(counter)
