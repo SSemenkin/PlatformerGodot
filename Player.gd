@@ -1,3 +1,4 @@
+
 extends KinematicBody2D
 
 const gravity = 900
@@ -17,8 +18,9 @@ func if_transporter_under_player_add_x_velocity():
 	for i in get_slide_count():
 		var collision = get_slide_collision(i)
 		if "Transporter" in collision.collider.name :
-			print('on transporter')
 			velocity.x += 30
+		if "Platform" in collision.collider.name && !is_on_wall() :
+			velocity.y -= jump_power
 
 func addMoney():
 	money += 1
@@ -46,8 +48,6 @@ func _physics_process(delta):
 		$JumpDust.frame = 0
 		$JumpDust.play()
 		$AnimatedSprite.play("jump")
-		
-	
 	if Input.is_action_pressed("run_left"):
 		$Position2D.position.x = abs($Position2D.position.x) * -1
 		$AnimatedSprite.flip_h = true
