@@ -1,14 +1,25 @@
-
+class_name Player
 extends KinematicBody2D
+
+enum State {
+	Alive,
+	Hurt,
+	Dead
+}
+
+var _state = State.Alive
 
 const gravity = 900
 const jump_power = 500
 const floor_ = Vector2(0, -1)
 const speed = 100
 
+var counter = 100
+
 const rock = preload("res://Rock.tscn")
 
 var is_throwing = false
+var is_pushed = false
 
 var money = 0
 
@@ -18,14 +29,21 @@ func if_transporter_under_player_add_x_velocity():
 	for i in get_slide_count():
 		var collision = get_slide_collision(i)
 		if "Transporter" in collision.collider.name :
-			velocity.x += 30
-		if "Platform" in collision.collider.name && !is_on_wall() :
-			velocity.y -= jump_power
+			velocity.x += 50
+		
 
 func addMoney():
 	money += 1
 
 func _physics_process(delta):
+	if is_on_floor() && is_pushed:
+		is_pushed = !is_pushed
+	
+	if is_throwing:
+		counter -= 1
+		if counter == 0:
+			counter = 100
+			is_throwing = false
 	
 	if Input.is_action_just_pressed("ui_accept") && is_on_floor() && !is_throwing:
 		is_throwing = true
@@ -77,7 +95,7 @@ func _physics_process(delta):
 		if is_on_floor() :
 			$AnimatedSprite.play("walk")
 			
-	else:
+	elif _state == State.Alive:
 		velocity.x = 0
 		$AnimatedSprite.play("idle")
 		$RunDust.hide()
@@ -97,5 +115,14 @@ func _on_AnimatedSprite_frame_changed():
 		get_parent().add_child(r)
 		is_throwing = false
 		
-		
+func push_reaction():
+	for i in get_slide_count():
+		var collision = get_slide_collision(i)
+		if "Platform" in collision.collider.name && !is_on_wall()  && !is_pushed:
+			velocity.y -= 2 * jump_power
+			is_pushed = !is_pushed
 
+func destroy():
+	print("player hurt")
+	$AnimatedSprite.play("hurt")
+	_state = State.Hurt

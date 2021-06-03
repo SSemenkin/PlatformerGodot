@@ -9,20 +9,42 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "KinematicBody2D",
+"class": "Base_Actor",
+"language": "GDScript",
+"path": "res://Base_Actor.gd"
+}, {
+"base": "Base_Actor",
+"class": "Enemy",
+"language": "GDScript",
+"path": "res://Enemy1.gd"
+}, {
 "base": "StaticBody2D",
 "class": "Platform",
 "language": "GDScript",
 "path": "res://Platform.gd"
+}, {
+"base": "KinematicBody2D",
+"class": "Player",
+"language": "GDScript",
+"path": "res://Player.gd"
 } ]
 _global_script_class_icons={
-"Platform": ""
+"Base_Actor": "",
+"Enemy": "",
+"Platform": "",
+"Player": ""
 }
 
 [application]
 
-config/name="SearchForAlarms"
+config/name="Platformer 2D Test"
 run/main_scene="res://Level1.tscn"
 config/icon="res://icon.png"
+
+[debug]
+
+settings/stdout/print_fps=true
 
 [display]
 

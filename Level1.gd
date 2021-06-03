@@ -8,13 +8,21 @@ extends Node2D
 var counter = 0
 
 
+var player = null
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	for i in get_child_count():
-		if "Money" in get_child(i).name:
-			counter += 1
-			
+	player = $Player
+	
+	for i in $Push_Platforms.get_child_count():
+		$Push_Platforms.get_child(i).connect("push", player, "push_reaction")
+
+	counter = $Money.get_child_count()
+		
+	
+
+
 	
 
 func _process(_delta):
